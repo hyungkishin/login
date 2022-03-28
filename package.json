@@ -1,0 +1,21 @@
+{
+  "name": "login_freedom",
+  "version": "0.0.6",
+  "description": "for hana.net",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.hanatour.com/HG318/login_freedom.git"
+  },
+  "author": "hoho",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "moment": "^2.29.1",
+    "os": "^0.1.2",
+    "puppeteer": "^13.5.1"
+  }
+}
