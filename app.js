@@ -12,17 +12,17 @@ app.get('/', (req, res) => {
 })
 
 const server = app.listen(port, () => {
-  console.log(
-      `${process.env.ID} ${process.env.PASS} ${desktopPath}/${imageName}`)
   const userId = process.env.ID
   const password = process.env.PASS
+
   if (!(userId && password)) {
-    console.log('아이디 비밀번호를 입력하세요. 서버 종료합니다.')
+    console.log('아이디 비밀번호가 누락되었습니다. 프로그램을 종료합니다.')
     server.close()
     return false
   }
+
   (async () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`listening on port ${port}`)
 
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
@@ -38,16 +38,16 @@ const server = app.listen(port, () => {
       console.log(`${dialog.message()} 라는 얼럿이 노출되었습니다.`)
       await dialog.accept()
     })
-    /*await page.goto('https://www.coupang.com/vp/products/5585221893?itemId=8939927662&vendorItemId=3064815450&isAddedCart=');
-    await page.screenshot({ path: '/Users/hslee/test_screenshot.png' });*/
+
     await page.goto('https://int.hanatour.co.kr/bebop/sso/hana_login.jsp')
     await page.waitForNavigation()
-    await page.screenshot({ path: '/Users/hslee/test_screenshot_1.png' })
+
     await page.type('#HanaId', userId, {delay: 300})
     await page.type('#HanaPassword', password, {delay: 300})
-    await page.screenshot({ path: '/Users/hslee/test_screenshot_2.png' })
     await page.click('img[src="img/btn_login.gif"]')
+
     await page.waitFor(1000 * 5)
+
     await page.screenshot({path: `${desktopPath}/${imageName}`})
     await browser.close()
     console.log(`==== 로그인이 완료되었습니다. 바탕화면에 ${imageName}를 확인하세요. ====`)
