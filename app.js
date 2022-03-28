@@ -12,6 +12,7 @@ app.get('/', (req, res) => {
 })
 
 const server = app.listen(port, () => {
+  console.log(`자동 로그인을 실행합니다. ${desktopPath}/${imageName}`)
   const userId = process.env.ID
   const password = process.env.PASS
 
@@ -39,18 +40,27 @@ const server = app.listen(port, () => {
       await dialog.accept()
     })
 
-    await page.goto('https://int.hanatour.co.kr/bebop/sso/hana_login.jsp')
-    await page.waitForNavigation()
+    //await page.goto('https://int.hanatour.co.kr/bebop/sso/hana_login.jsp')
+    try{
+      await page.goto('https://int.hanatour.co.kr/bebop/sso/hana_login.jsp')
+      // TODO : 이 부분이 timeout 걸려서 실패하는 케이스가 있다.
+      await page.waitFor(1000 * 5)
 
-    await page.type('#HanaId', userId, {delay: 300})
-    await page.type('#HanaPassword', password, {delay: 300})
-    await page.click('img[src="img/btn_login.gif"]')
+      await page.type('#HanaId', userId, {delay: 300})
+      await page.type('#HanaPassword', password, {delay: 300})
+      await page.click('img[src="img/btn_login.gif"]')
 
-    await page.waitFor(1000 * 5)
+      await page.waitFor(1000 * 5)
 
-    await page.screenshot({path: `${desktopPath}/${imageName}`})
-    await browser.close()
-    console.log(`==== 로그인이 완료되었습니다. 바탕화면에 ${imageName}를 확인하세요. ====`)
-    server.close()
+      await page.screenshot({path: `${desktopPath}/${imageName}`})
+      await browser.close()
+      console.log(`==== 로그인이 완료되었습니다. 바탕화면에 ${imageName}를 확인하세요. ====`)
+      server.close()
+    }catch(error){
+      console.log('error 발생')
+      console.log(error)
+      server.close()
+    }
+
   })()
 })
