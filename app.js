@@ -3,18 +3,19 @@ const moment = require('moment')
 const puppeteer = require('puppeteer')
 const homeDir = require('os').homedir()
 const imageName = `${moment().format('YYYYMMDD_HHmmss')}.png`
-const desktopPath = `${homeDir}/Desktop`
+const loginScreenShotPath = `${homeDir}/Screenshot/login`
 const app = express()
 const port = 3000
-
+require('dotenv').config();
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
 const server = app.listen(port, () => {
-  console.log(`자동 로그인을 실행합니다. ${desktopPath}/${imageName}`)
+  console.log(`자동 로그인을 실행합니다. ${loginScreenShotPath}/${imageName}`)
   const userId = process.env.ID
   const password = process.env.PASS
+  const url = process.env.URL
 
   if (!(userId && password)) {
     console.log('아이디 비밀번호가 누락되었습니다. 프로그램을 종료합니다.')
@@ -42,19 +43,19 @@ const server = app.listen(port, () => {
 
     //await page.goto('https://int.hanatour.co.kr/bebop/sso/hana_login.jsp')
     try{
-      await page.goto('https://int.hanatour.co.kr/bebop/sso/hana_login.jsp')
+      await page.goto(url)
       // TODO : 이 부분이 timeout 걸려서 실패하는 케이스가 있다.
-      await page.waitFor(1000 * 5)
+      await page.waitForTimeout(1000 * 5)
 
       await page.type('#HanaId', userId, {delay: 300})
       await page.type('#HanaPassword', password, {delay: 300})
       await page.click('img[src="img/btn_login.gif"]')
 
-      await page.waitFor(1000 * 5)
+      await page.waitForTimeout(1000 * 5)
 
-      await page.screenshot({path: `${desktopPath}/${imageName}`})
+      await page.screenshot({path: `${loginScreenShotPath}/${imageName}`})
       await browser.close()
-      console.log(`==== 로그인이 완료되었습니다. 바탕화면에 ${imageName}를 확인하세요. ====`)
+      console.log(`==== 로그인이 완료되었습니다. ${loginScreenShotPath} 에 ${imageName}를 확인하세요. ====`)
       server.close()
     }catch(error){
       console.log('error 발생')
