@@ -6,17 +6,7 @@
 $ ID=HGTEST PASS=mypassword node app.js 
 ```
 
-#### 처음 사용시 
-
-```
-$ git clone https://git.hanatour.com/HG318/login_freedom.git
-$ cd login_freedom 
-$ npm install 
-$ ID=hg318 PASS=mypassword node app.js 
-```
-
-
-### TODO 
+### TRY 
 mac 의 경우 crontab -e
 10 10 * * 1-5 ID="yourID" PASS="Your PassWord" /usr/local/bin/node /Users/당신의 경로/login_freedom/app.js
 
