@@ -9,12 +9,6 @@
 $ ID=HG318 PASS=mypassword node app.js 
 ```
 
-
-
-![ex_screenshot](./20220328_163912.png)
-
-
-
 #### 처음 사용시 
 
 ```
@@ -26,4 +20,3 @@ $ ID=hg318 PASS=mypassword node app.js
 
 
 ### TODO 
-- 이걸 쉘 스크립트로 만들어서 부팅 후 자동 실행 
